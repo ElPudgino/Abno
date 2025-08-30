@@ -22,10 +22,15 @@ repositories {
 	maven {
 		url = "https://maven.minecraftforge.net/"
 	}
+	maven {
+        name = "GeckoLib"
+        url = uri("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
+    }
 }
 
 dependencies {
 	minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2860"
+	implementation("software.bernie.geckolib:geckolib-forge-1.12.2:3.0.31")
 }
 
 minecraft {
@@ -51,6 +56,18 @@ processResources {
 		expand "version": project.version
 	}
 }
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java'] 
+        }
+        resources {
+            srcDirs = ['src/main/resources'] 
+        }
+    }
+}
+
 
 //When Forge 1.12 loads mods from a directory that's been put on the classpath, it expects to find resources in the same directory.
 //Default Gradle behavior puts resources in ./build/resources/main instead of ./build/classes/main/java. Let's change that.

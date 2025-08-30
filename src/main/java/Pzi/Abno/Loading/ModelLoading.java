@@ -2,7 +2,6 @@ package pzi.abno.loading;
 
 import pzi.abno.block.ModBlocks;
 
-import pzi.abno.block.AbnoBlock;
 import pzi.abno.Abno;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.client.event.ModelRegistryEvent;

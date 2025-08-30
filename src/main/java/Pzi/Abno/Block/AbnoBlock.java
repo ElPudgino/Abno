@@ -1,10 +1,7 @@
 package pzi.abno.block;
 
-import pzi.abno.block.ModBlocks;
-
 import pzi.abno.*;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.init.Blocks;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
