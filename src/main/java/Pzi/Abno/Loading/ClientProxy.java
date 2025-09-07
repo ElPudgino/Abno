@@ -13,6 +13,7 @@ public class ClientProxy extends ServerProxy
     public void preInit(FMLPreInitializationEvent e) {
         EntityRenderHandler.registerRenderers();
         ShaderUtils.initShaders();
+        pzi.abno.rendering.RenderUtils.loadModels();
         super.preInit(e);
     }
 }

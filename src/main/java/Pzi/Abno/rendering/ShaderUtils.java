@@ -4,12 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Vector;
 
 import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GL11;
 
+import codechicken.lib.vec.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
@@ -22,6 +24,8 @@ public class ShaderUtils {
 
     private static boolean DefaultLighting;
 
+    public static int timeLoc = 0;
+    public static int colorLoc = 0;
 
     public static void initShaders() {
 		if (Minecraft.getMinecraft().getResourceManager() instanceof SimpleReloadableResourceManager) {
@@ -31,6 +35,7 @@ public class ShaderUtils {
 				LoadShaderProgs();
 			});
 		}
+
 	}
 
     public static void EnableShaderProg(int prog_id)
@@ -49,10 +54,23 @@ public class ShaderUtils {
     public static void EnableShaderProg(int prog_id, float shader_time)
     {
         EnableShaderProg(prog_id);
-        int time = ARBShaderObjects.glGetUniformLocationARB(prog_id, "time");
-        ARBShaderObjects.glUniform1fARB(time, shader_time);
-
+        if (timeLoc == 0)
+        {
+            timeLoc = ARBShaderObjects.glGetUniformLocationARB(prog_id, "time");
+        }     
+        ARBShaderObjects.glUniform1fARB(timeLoc, shader_time);
     }
+
+    public static void EnableShaderProg(int prog_id, float shader_time, Vector3 color)
+    {
+        EnableShaderProg(prog_id, shader_time);
+        if (colorLoc == 0)
+        {
+            colorLoc = ARBShaderObjects.glGetUniformLocationARB(prog_id, "color");
+        }     
+        ARBShaderObjects.glUniform3fARB(colorLoc, (float)color.x, (float)color.y, (float)color.z);
+    }
+
 
     public static void DisableShaderProg()
     {

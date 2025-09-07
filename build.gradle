@@ -26,11 +26,19 @@ repositories {
         name = "GeckoLib"
         url = uri("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
     }
+	maven {
+        name = "CCLib"
+        url = uri("https://chickenbones.net/maven/")
+    }
+	maven {
+		url = uri("https://maven.cil.li/")
+	}
 }
 
 dependencies {
 	minecraft "net.minecraftforge:forge:1.12.2-14.23.5.2860"
 	implementation("software.bernie.geckolib:geckolib-forge-1.12.2:3.0.31")
+	implementation("codechicken:CodeChickenLib:1.12.2-3.2.3.358:deobf")
 }
 
 minecraft {

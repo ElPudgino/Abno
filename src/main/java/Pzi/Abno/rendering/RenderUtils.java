@@ -3,21 +3,39 @@ package pzi.abno.rendering;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import codechicken.lib.render.CCModel;
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.OBJParser;
+import codechicken.lib.vec.Matrix4;
+import codechicken.lib.vec.Rotation;
+import codechicken.lib.vec.Vector3;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import pzi.abno.Abno;
+import pzi.abno.loading.ResourcesHelper;
 
 public class RenderUtils {
+    public static Map<String, CCModel> Models = new HashMap<String, CCModel>();
+
     public static List<Double> QuadVerts = Arrays.asList(-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5);
 
-    
+    public static void loadModels()
+    {
+        Models.putIfAbsent("Cone1", CCModel.combine(OBJParser.parseModels(ResourcesHelper.GetModelLocation("cone1.obj")).values()));
+    }
 
-    public static void RenderQuad(double x, double y, double z, double size, ResourceLocation texLocation, float shader_time)
+    public static Matrix4 ToMatrix(double x, double y, double z, Rotation rot, double size)
+    {
+        return codechicken.lib.render.RenderUtils.getMatrix(new Vector3(x, y, z), rot, size);
+    }
+
+    public static void RenderMesh(String meshname, Matrix4 trs, ResourceLocation texLocation, float shader_time, Vector3 color)
     {
         GlStateManager.pushMatrix();
 		GlStateManager.disableTexture2D();
@@ -26,26 +44,21 @@ public class RenderUtils {
         GlStateManager.enableRescaleNormal();
         GlStateManager.shadeModel(GL11.GL_SMOOTH);  
 
-        Tessellator tessellator = Tessellator.getInstance();
-        ShaderUtils.EnableShaderProg(ShaderUtils.TestShader, shader_time);
-        BufferBuilder builder = tessellator.getBuffer();
+        
+        ShaderUtils.EnableShaderProg(ShaderUtils.TestShader, shader_time, color);
 
-        // disable depth write for transparent objects or draw them later 
-
-		builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
-
+        CCRenderState ccrs = CCRenderState.instance();
+      
+        CCModel cm = Models.get(meshname);
+        
         if (texLocation != null)
         {
             Minecraft.getMinecraft().renderEngine.bindTexture(texLocation);
         }
-        
 
-        for (int i = 0; i < 4; i++)
-        {
-            builder.pos(size * QuadVerts.get(2*i) + x, size * QuadVerts.get(2*i+1) + y, 0+z ).tex(QuadVerts.get(2*i)+0.5, QuadVerts.get(2*i+1)+0.5).normal(0.0F, 1.0F, 0.0F).endVertex();
-        }
-        
-        tessellator.draw();
+        ccrs.startDrawing(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX);
+        cm.render(ccrs, trs);
+        ccrs.draw();
 
         ShaderUtils.DisableShaderProg();
 

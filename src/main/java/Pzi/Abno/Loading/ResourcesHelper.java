@@ -10,9 +10,19 @@ public class ResourcesHelper {
         return "/assets/abno/shaders/";
     }   
 
+    public static String GetModelsPath()
+    {
+        return "obj_models/";
+    }
+
     public static String GetShaderTexturesPath()
     {
         return "textures/shaders/";
+    }
+
+    public static ResourceLocation GetModelLocation(String name)
+    {
+        return GetLocation(GetModelsPath()+name);
     }
 
     public static ResourceLocation GetShaderTextureLocation(String name)
