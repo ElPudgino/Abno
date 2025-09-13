@@ -20,7 +20,10 @@ import pzi.abno.loading.ResourcesHelper;
 
 public class ShaderUtils {
     public static int DefaultShader = 0;
-    public static int TestShader = 0;
+    public static int FireballCenter = 0;
+    public static int FireballSide = 0;
+    public static int FireballInner = 0;
+    public static int FireballOuter = 0;
 
     private static boolean DefaultLighting;
 
@@ -30,7 +33,10 @@ public class ShaderUtils {
     public static void initShaders() {
 		if (Minecraft.getMinecraft().getResourceManager() instanceof SimpleReloadableResourceManager) {
 			((SimpleReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(manager -> {
-				DeleteShaderProg(TestShader); TestShader = 0;
+				DeleteShaderProg(FireballCenter); FireballCenter = 0;
+                DeleteShaderProg(FireballSide); FireballSide = 0;
+                DeleteShaderProg(FireballInner); FireballInner = 0;
+                DeleteShaderProg(FireballOuter); FireballOuter = 0;
 
 				LoadShaderProgs();
 			});
@@ -46,7 +52,8 @@ public class ShaderUtils {
         }
         DefaultLighting = GL11.glGetBoolean(GL11.GL_LIGHTING);
         GlStateManager.disableLighting();
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+        //GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+        //GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 
         ARBShaderObjects.glUseProgramObjectARB(prog_id);
     }
@@ -77,6 +84,8 @@ public class ShaderUtils {
         if(DefaultLighting)
 			GlStateManager.enableLighting();
 		
+        //GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+        //GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
         ARBShaderObjects.glUseProgramObjectARB(0);
     }
 
@@ -88,7 +97,10 @@ public class ShaderUtils {
 
     private static void LoadShaderProgs()
     {
-        TestShader = LoadShaderProg("testfrag", "testvert");
+        FireballCenter = LoadShaderProg("fireballcenter", "basevert");
+        FireballSide = LoadShaderProg("fireballside", "basevert");
+        FireballInner = LoadShaderProg("fireballinner", "basevert");
+        FireballOuter = LoadShaderProg("fireballouter", "basevert");
     }
 
     protected static int LoadShaderProg(String fragname, String vertname)
@@ -145,7 +157,7 @@ public class ShaderUtils {
             Abno.logger.error("Couldnt read shader file: " + ResourcesHelper.GetShadersPath() + name + ".glsl");
             return 0;
         }
-        Abno.logger.info("Read shader: "+sh_source);
+        //Abno.logger.info("Read shader: "+sh_source);
         ARBShaderObjects.glShaderSourceARB(Shader, sh_source);
         ARBShaderObjects.glCompileShaderARB(Shader);
 

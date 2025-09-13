@@ -2,6 +2,7 @@ package pzi.abno.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.MoverType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -29,11 +30,16 @@ public class EntityFireballMagic extends Entity implements IProjectile
     @Override
     public void onUpdate()
     {
-        super.onUpdate();
-        motionX += 0.01;
-        motionY += 0.01;
-        motionZ -= 0.01;
+        motionX = -0.02f;
+        motionZ = 0.01f;
+        //motionY = 0f;
+        move(MoverType.SELF,motionX,motionY,motionZ);
+        super.onUpdate();      
     }
+
+   // private CheckCollisions()
+   // {
+   // }
 
     @Override
     protected void readEntityFromNBT(NBTTagCompound compound) 
