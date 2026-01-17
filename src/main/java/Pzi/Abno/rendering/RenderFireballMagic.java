@@ -8,6 +8,7 @@ import codechicken.lib.vec.Vector3;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
+import pzi.abno.Abno;
 import pzi.abno.entity.EntityFireballMagic;
 import pzi.abno.loading.ClientProxy;
 import pzi.abno.loading.ResourcesHelper;

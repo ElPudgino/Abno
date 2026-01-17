@@ -27,7 +27,7 @@ public class MathExtra
             return new Rotation(0,1,0,0);
         }
         velocity = velocity.normalize();
-        Vector3 axis = Cross(forward, velocity);
+        Vector3 axis = Cross(forward, velocity).normalize();
         double angle = Math.acos(Dot(forward, velocity) / (forward.mag() * velocity.mag()));    
         return new Rotation(angle, axis);
     }
